@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { Navbar, Button } from "react-bootstrap";
 
 export default class ToolBarBase extends Component {
@@ -11,7 +11,7 @@ export default class ToolBarBase extends Component {
           bg="light"
           style={{ width: "60px" }}
         >
-          <Button onClick={this.props.onShow}>df</Button>
+          <Button onClick={this.props.onShow}>show</Button>
           <Navbar.Brand href="#">Navbar</Navbar.Brand>
         </Navbar>
       </>

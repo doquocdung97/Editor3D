@@ -1,3 +1,4 @@
+import React from 'react'
 import * as icons from "react-bootstrap-icons";
 
 interface IconProps extends icons.IconProps {

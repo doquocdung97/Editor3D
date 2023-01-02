@@ -1,4 +1,4 @@
-import react, { Component } from "react";
+import React, { Component } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { Icon } from "../Icon";
 import Constants from "../../Constants";
@@ -10,7 +10,7 @@ import {
   StateConfig,
   ResizeConfig,
   StateItemConfig,
-  StateItemChildConfig
+  StateItemChildConfig,
 } from "./Interface";
 import SidebarService from "./service";
 class Tab extends Component {
@@ -29,7 +29,7 @@ class Tab extends Component {
           </Button>
         </TabBase.Header>
         <TabBase.Body>
-          <h1>sdfdsf</h1>
+          <h1>sdfdsf 3</h1>
         </TabBase.Body>
       </TabBase>
     );
@@ -51,7 +51,7 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
       minReSizeWidth: 300,
       maxReSizeWidth: 500,
       width: 400,
-      widthmobile: 300
+      widthmobile: 300,
     };
     this.state = {
       ismobile: this.checkMobile(),
@@ -64,12 +64,12 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
           children: [
             {
               component: Tab,
-              hidden: true
+              hidden: false,
             },
             {
-              component: Tab
-            }
-          ]
+              component: Tab,
+            },
+          ],
         },
         {
           icon: "House",
@@ -78,18 +78,18 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
           children: [
             {
               component: Tab,
-              hidden: true
+              hidden: true,
             },
             {
-              component: Tab
+              component: Tab,
             },
             {
-              component: Tab
+              component: Tab,
             },
             {
-              component: Tab
-            }
-          ]
+              component: Tab,
+            },
+          ],
         },
         {
           icon: "Gear",
@@ -98,14 +98,14 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
           children: [
             {
               component: Tab,
-              hidden: true
+              hidden: true,
             },
             {
-              component: Tab
-            }
-          ]
-        }
-      ]
+              component: Tab,
+            },
+          ],
+        },
+      ],
     };
     SidebarService.init(this);
   }
@@ -256,9 +256,9 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
             width: !this.state.toggle
               ? "auto"
               : (this.state.ismobile
-                  ? this.resizeData.widthmobile
-                  : this.resizeData.width) + "px",
-            visibility: "visible"
+                ? this.resizeData.widthmobile
+                : this.resizeData.width) + "px",
+            visibility: "visible",
           }}
         >
           <div className="toolbar-main">
@@ -289,10 +289,10 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
                     <div className="tools">
                       <Button
                         onClick={() => {
-                          LayoutService.create({
+                          LayoutService.createView({
                             type: "Component",
                             title: "B Component",
-                            props: { id: 20 }
+                            props: { id: 20 },
                           });
                         }}
                       >
@@ -314,15 +314,10 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
           </div>
         </aside>
         <div
-          className="resize-handle--x"
+          className={this.state.toggle && !this.state.ismobile?"resize-handle--x":String()}
           onMouseDown={this.mousedown.bind(this)}
           data-target="aside"
         >
-          {/* <div className="btn-toggle-resize">
-            <button onClick={this.setToggle.bind(this)}>
-              {this.state.toggle ? "<<<" : ">>>"}
-            </button>
-          </div> */}
         </div>
       </>
     );

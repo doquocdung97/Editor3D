@@ -1,10 +1,9 @@
 import "./styles.scss";
 import Sidebar from "./Gui/Sidebar";
-import GoldenTest from "./Gui/Layout";
 import ToolBarBase from "./Gui/Toolbar";
 import Layout from "./Gui/Layout";
 import { Row, Col, Button } from "react-bootstrap";
-import react, { Component } from "react";
+import React, { Component } from "react";
 class Vector {
   private _x: number = 0;
   private _y: number = 0;
@@ -36,12 +35,12 @@ export default class App extends Component {
       handleWidth: 10,
       resizeTarget: null,
       parentElement: null,
-      maxWidth: null
+      maxWidth: null,
     };
     this.state = {
       toggle: true,
       width: 200,
-      showMobile: false
+      showMobile: false,
     };
   }
   showMobile(status: any) {

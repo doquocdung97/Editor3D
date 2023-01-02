@@ -1,10 +1,11 @@
-import { ElementRef, Component } from "react";
+import { ElementRef } from "react";
 export interface PropsConfig {
   show: boolean;
   onHide: any;
 }
 export interface StateItemChildConfig {
   component: any;
+  show?: boolean;
   hidden?: boolean;
 }
 
