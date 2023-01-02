@@ -1,0 +1,54 @@
+//start card slide
+.card-slide .header{
+  // display: flow-root;
+  background: #0000002b;
+  cursor: pointer;
+  height: 25px;
+  // border-bottom: 0.5px solid #eee;
+  border-top: 0.5px solid #eee;
+  display: flex;
+  align-items: center;
+}
+.card-slide .header .tools{
+  float: right;
+  display: flex;
+}
+.card-slide .header .tools Button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3px;
+  margin: 0 2px;
+  font-size: 10pt;
+  background: transparent;
+  border: none;
+  color: #000;
+}
+.card-slide .header .tools Button:hover{
+  background: #eee;
+}
+.card-slide .header .title{
+  float: left;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.card-slide .header .title .icon{
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.card-slide .body{
+  height: 300px;
+  overflow: auto;
+  display: none;
+}
+.card-slide .body.show{
+  display: block;
+}
+
+
+
+//end card slide
