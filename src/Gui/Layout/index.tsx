@@ -42,7 +42,7 @@ export default class Layout extends Component<{}, State> {
   // }
   onRenderTabSet(node: any, renderValues: any) {
     // let component = node.getComponent();
-    console.log(node._children[0]);
+    // console.log(node._children[0]);
     // renderValues.stickyButtons.push(
     //   <img
     //     src="images/add.svg"
