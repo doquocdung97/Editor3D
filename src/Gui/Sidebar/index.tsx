@@ -1,43 +1,109 @@
 import React, { Component } from "react";
-import { Row, Col, Button } from "react-bootstrap";
+import { Dropdown, Button } from "react-bootstrap";
 import { Icon } from "../Icon";
 import Constants from "../../Constants";
-import { TabBase } from "./Child";
 import "./styles.scss";
 import LayoutService from "../Layout/service";
-import {
-  PropsConfig,
-  StateConfig,
-  ResizeConfig,
-  StateItemConfig,
-  StateItemChildConfig,
-} from "./Interface";
+import { PropsConfig, StateConfig, ResizeConfig } from "./Interface";
 import SidebarService from "./service";
-class Tab extends Component {
+import { TabBase as Tab } from "./Child";
+class WorkbenchBase {
+  Children = [];
+  Name: String = String();
+  Title: String = String();
+  Icon: String = String();
+  #Enabled: boolean = true;
+  Parent;
+  constructor(parent: any) {
+    let self = this;
+    setTimeout(function () {
+      let childs = self.Children;
+      let new_child = [];
+      for (let i = 0; i < childs.length; i++) {
+        new_child.push(new childs[i](self));
+      }
+      self.Children = new_child;
+    }, 0);
+    this.Parent = parent;
+  }
+  get Enabled() {
+    return this.#Enabled;
+  }
+  setEnabled(status: boolean) {
+    this.#Enabled = status;
+    this.update();
+  }
+  update() {
+    this.Parent.update();
+  }
+  Activated() {}
+}
+class TabBase {
+  static Base = Tab;
+  static Button = Button;
+  static Icon = Icon;
+  Name: String = String();
+  Title: String = String();
+  Parent: any;
+  #UI: Component;
+  #Enabled: boolean = true;
+  #Show: boolean = true;
+  constructor(parent) {
+    this.Parent = parent;
+  }
+  IsActive() {
+    return this.#Show;
+  }
+  setShow(status: boolean) {
+    this.#Show = status;
+  }
+  get Enabled() {
+    return this.#Enabled;
+  }
+  setEnabled(status: boolean) {
+    this.#Enabled = status;
+    this.update();
+  }
+  setUI(element: any) {
+    this.#UI = element;
+  }
+  update() {
+    this.#UI.setState({ date: new Date() });
+  }
+  render(): JSX.Element {
+    return <></>;
+  }
+}
+interface PropsTab {
+  parent: any;
+}
+class TabComponent extends Component<PropsTab, {}> {
+  constructor(props: PropsTab) {
+    super(props);
+    let parent = this.props.parent;
+    parent.setUI(this);
+    this.state = {
+      date: new Date(),
+    };
+  }
+  onToggle(status: boolean) {
+    let parent = this.props.parent;
+    parent.setShow(status);
+  }
   render() {
+    let parent = this.props.parent;
+    if (!parent.Enabled) return;
+    let Child = parent.render();
     return (
-      <TabBase>
-        <TabBase.Header title="test tab">
-          <Button>
-            <Icon iconName="ArrowClockwise" />
-          </Button>
-          <Button>
-            <Icon iconName="Gear" />
-          </Button>
-          <Button>
-            <Icon iconName="Bank" />
-          </Button>
-        </TabBase.Header>
-        <TabBase.Body>
-          <h1>sdfdsf 3</h1>
-        </TabBase.Body>
-      </TabBase>
+      <Tab onToggle={this.onToggle.bind(this)} show={parent.IsActive()}>
+        {Child?.props.children}
+      </Tab>
     );
   }
 }
-
-export default class Sidebar extends Component<PropsConfig, StateConfig> {
+class Sidebar extends Component<PropsConfig, StateConfig> {
   resizeData: ResizeConfig;
+  service = SidebarService;
   constructor(props: PropsConfig) {
     super(props);
     this.resizeData = {
@@ -56,70 +122,20 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
     this.state = {
       ismobile: this.checkMobile(),
       toggle: true,
-      item: [
-        {
-          icon: "Files",
-          title: "Files",
-          active: true,
-          children: [
-            {
-              component: Tab,
-              hidden: false,
-            },
-            {
-              component: Tab,
-            },
-          ],
-        },
-        {
-          icon: "House",
-          title: "Home",
-          active: false,
-          children: [
-            {
-              component: Tab,
-              hidden: true,
-            },
-            {
-              component: Tab,
-            },
-            {
-              component: Tab,
-            },
-            {
-              component: Tab,
-            },
-          ],
-        },
-        {
-          icon: "Gear",
-          title: "Setting",
-          active: false,
-          children: [
-            {
-              component: Tab,
-              hidden: true,
-            },
-            {
-              component: Tab,
-            },
-          ],
-        },
-      ],
+      date: new Date(),
     };
-    SidebarService.init(this);
+    this.service.init(this);
   }
-  onSelectTab(item: any) {
-    let status = !item.active;
-    this.state.item.map((element: any, index: number) => {
-      element.active = false;
-    });
+  onSelectTab(item: any, index: number) {
+    let index_active = this.service.Active();
     let ismobile = this.checkMobile();
-    if (ismobile) {
-      status = true;
+    let status = true;
+    if (!ismobile && index_active == index) {
+      index = -1;
+      status = false;
     }
-    item.active = status;
-    this.setState({ toggle: status, item: this.state.item });
+    this.service.setActive(index, false);
+    this.setState({ toggle: status, date: new Date() });
     this.onResize();
   }
   componentDidMount() {
@@ -155,8 +171,6 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
     if (this.resizeData.tracking) {
       this.resizeData.tracking = false;
       this.resizeData.resizeTarget.classList.add("nav");
-
-      console.log("tracking stopped");
     }
   }
   mousemove(event: any) {
@@ -222,8 +236,6 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
     this.resizeData.maxWidth =
       handleElement.parentElement.clientWidth - this.resizeData.handleWidth;
     this.resizeData.tracking = true;
-
-    console.log("tracking started");
   }
   onResize() {
     setTimeout(() => {
@@ -235,7 +247,28 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
   //   this.setState({ toggle: toggle });
   //   this.onResize();
   // }
+  onToggleTab(item: any) {
+    let status = !item.Enabled;
+    item.setEnabled(status);
+    //this.setState({ date: new Date() });
+  }
+  onSetting() {
+    LayoutService.createView(
+      {
+        type: "tab",
+        component: "Settings",
+        name: "Settings",
+      },
+      true
+    );
+    this.props.onHide();
+  }
   render() {
+    let tabs = this.service.getTabs();
+    let active =
+      this.checkMobile() && this.service.Active() < 0
+        ? 0
+        : this.service.Active();
     return (
       <>
         <div
@@ -253,73 +286,102 @@ export default class Sidebar extends Component<PropsConfig, StateConfig> {
             (this.state.ismobile && this.props.show ? "show" : "")
           }
           style={{
-            width: !this.state.toggle
-              ? "auto"
-              : (this.state.ismobile
-                ? this.resizeData.widthmobile
-                : this.resizeData.width) + "px",
+            width:
+              !this.state.ismobile && !this.state.toggle
+                ? "auto"
+                : (this.state.ismobile
+                    ? this.resizeData.widthmobile
+                    : this.resizeData.width) + "px",
             visibility: "visible",
           }}
         >
           <div className="toolbar-main">
-            {this.state.item?.map((item: StateItemConfig, index: number) => {
-              return (
-                <div className="child" key={index}>
-                  <Button
-                    className={item.active ? "active " : ""}
-                    onClick={() => {
-                      this.onSelectTab(item);
-                    }}
-                  >
-                    <Icon iconName={item.icon} />
-                  </Button>
-                </div>
-              );
+            {Object.keys(tabs)?.map((key: string, index: number) => {
+              let tab = tabs[key];
+              if (tab.Enabled) {
+                return (
+                  <div className="child" key={index}>
+                    <Button
+                      className={index == active ? "active " : ""}
+                      onClick={() => {
+                        this.onSelectTab(tab, index);
+                      }}
+                    >
+                      <Icon iconName={tab.Icon} />
+                    </Button>
+                  </div>
+                );
+              }
             })}
+            <div className="child btn-bottom">
+              <Button onClick={this.onSetting.bind(this)}>
+                <Icon iconName="Gear" />
+              </Button>
+            </div>
           </div>
           <div className="toolbar-tabs">
-            {this.state.item?.map((item: StateItemConfig, index: number) => {
+            {Object.keys(tabs)?.map((key: string, index: number) => {
+              let tab = tabs[key];
               return (
                 <div
-                  className={(item.active ? "active " : "") + "child"}
+                  className={(index == active ? "active " : "") + "child"}
                   key={index}
                 >
                   <div className="header">
-                    <div className="title">{item.title}</div>
+                    <div className="title">{tab.Title}</div>
                     <div className="tools">
-                      <Button
+                      <Dropdown drop="end">
+                        <Dropdown.Toggle>
+                          <Icon iconName="Gear" />
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                          {tab.Children?.map((child: any, index: number) => {
+                            return (
+                              <Dropdown.Item
+                                key={index}
+                                onClick={() => this.onToggleTab(child)}
+                                className={!child.Enabled ? "hidden" : "show"}
+                              >
+                                {child.Enabled && <Icon iconName="Check2" />}
+                                {child.Title}
+                              </Dropdown.Item>
+                            );
+                          })}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                      {/* <Button
                         onClick={() => {
                           LayoutService.createView({
-                            type: "Component",
-                            title: "B Component",
-                            props: { id: 20 },
+                            type: "tab",
+                            component: "EditorCode",
+                            name: "test-102"
                           });
                         }}
                       >
                         <Icon iconName="Gear" />
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
-                  {item.children?.map(
-                    (child: StateItemChildConfig, index: number) => {
-                      let Component = child.component;
-                      if (!child.hidden) {
-                        return <Component key={index} />;
-                      }
-                    }
-                  )}
+                  {tab.Children?.map((child: any, index: number) => {
+                    return <TabComponent parent={child} key={index} />;
+                  })}
                 </div>
               );
             })}
           </div>
         </aside>
         <div
-          className={this.state.toggle && !this.state.ismobile?"resize-handle--x":String()}
+          className={
+            this.state.toggle && !this.state.ismobile
+              ? "resize-handle--x"
+              : String()
+          }
           onMouseDown={this.mousedown.bind(this)}
           data-target="aside"
-        >
-        </div>
+        ></div>
       </>
     );
   }
 }
+export { Sidebar, TabBase, WorkbenchBase };

@@ -45,6 +45,12 @@ aside{
 .toolbar-tabs .child.active{
   display: block;
 }
+.toolbar-main .child.btn-bottom{
+  position: absolute;
+  bottom: 0px;
+  width: 50px;
+}
+
 .toolbar-tabs{
   height: 100%;
   width: 100%;
@@ -119,4 +125,13 @@ aside{
   display: flex;
   width: 100%;
   align-items: center;
+}
+.nav .dropdown-toggle::after{
+  display: none;
+}
+.nav .dropdown-menu .dropdown-item.hidden{
+  padding-left: 40px;
+}
+.nav .dropdown-menu .dropdown-item.show svg{
+  margin-right:8px
 }

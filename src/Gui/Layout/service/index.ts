@@ -1,8 +1,10 @@
-import { IJsonModel } from "flexlayout-react";
+import { IJsonModel, Model, Actions } from "flexlayout-react";
+//import { Actions } from "flexlayout-react/model/Actions";
 class _LayoutService {
   private parent: any;
   private layouts: any = {};
   private Config: IJsonModel;
+  Actions = Actions;
   constructor() {
     this.Config = {
       global: {},
@@ -16,18 +18,23 @@ class _LayoutService {
             children: [
               {
                 type: "tab",
-                component: "View3D",
-                name: "View 3D"
+                component: "EditorCode",
+                name: "Editer",
               },
               {
                 type: "tab",
-                component: "EditorCode",
-                name: "Editer"
-              }
-            ]
-          }
-        ]
-      }
+                component: "Settings",
+                name: "Settings",
+              },
+              {
+                type: "tab",
+                component: "View3D",
+                name: "View 3D",
+              },
+            ],
+          },
+        ],
+      },
     };
   }
   init(parent: any) {
@@ -39,7 +46,18 @@ class _LayoutService {
   onResize() {
     // this.parent.onResize();
   }
-  createView(component: any) {
+  createView(component: any, isCheck: boolean = false) {
+    if (isCheck) {
+      let views = this.getViews();
+      for (let i = 0; i < views.length; i++) {
+        let node = views[i];
+        let compo = node.getComponent();
+        if (compo == component.component) {
+          this.setActive(node);
+          return;
+        }
+      }
+    }
     this.parent.createTabs(component);
   }
   apply(data: any) {
@@ -55,11 +73,21 @@ class _LayoutService {
   getViews() {
     let root = this.parent.state.model._root;
     if (root && root._children.length > 0) {
-      return root._children[0]._children;
+      let layout = [];
+      for (let i = 0; i < root._children.length; i++) {
+        let setnode = root._children[i];
+        layout.push(...setnode._children);
+      }
+      return layout;
     }
   }
   getLayouts() {
     return this.layouts;
+  }
+  setActive(node: any) {
+    this.parent.state.model.doAction(
+      this.Actions.selectTab(node._attributes.id)
+    );
   }
 }
 const LayoutService = new _LayoutService();

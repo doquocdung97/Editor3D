@@ -3,22 +3,10 @@ export interface PropsConfig {
   show: boolean;
   onHide: any;
 }
-export interface StateItemChildConfig {
-  component: any;
-  show?: boolean;
-  hidden?: boolean;
-}
-
-export interface StateItemConfig {
-  icon: string;
-  title: string;
-  active: boolean;
-  children: StateItemChildConfig[];
-}
 export interface StateConfig {
   ismobile: boolean;
   toggle: boolean;
-  item: StateItemConfig[];
+  date: any;
 }
 export interface ResizeConfig {
   tracking: boolean;
@@ -36,7 +24,7 @@ export interface ResizeConfig {
 export interface PropsTabBase {
   children?: ElementRef<any>;
   show?: boolean;
-  onToggle?: (status: boolean) => {};
+  onToggle?: (status: boolean) => void;
 }
 export interface StateTabBase {
   show: boolean;
@@ -46,4 +34,4 @@ export interface PropsHeader {
   children?: ElementRef<any>;
   title: string;
 }
-export interface StateHeader {}
+export interface StateHeader { }

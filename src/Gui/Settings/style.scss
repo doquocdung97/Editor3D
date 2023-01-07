@@ -1,0 +1,9 @@
+.settings{
+    & .view{
+        padding:10px 0;
+        & .row{
+            margin:0;
+            padding:0;
+        }
+    }
+}

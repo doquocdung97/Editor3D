@@ -1,4 +1,5 @@
 import { Component } from "react";
+import LayoutService from "../service";
 interface PropsConfig {
   node: any;
 }
@@ -8,9 +9,13 @@ export class ViewBase extends Component<PropsConfig, StateConfig> {
   constructor(props: PropsConfig) {
     super(props);
     let node = this.props.node;
+    node._attributes.componentview = this;
     node.setEventListener("close", this.onClone.bind(this));
     node.setEventListener("visibility", this._visibility.bind(this));
     node.setEventListener("resize", this.onResize.bind(this));
+  }
+  onActive() {
+    LayoutService.setActive(this.props.node);
   }
   private _visibility() {
     let status = this.props.node._visible;

@@ -56,6 +56,12 @@ export default class Layout extends Component<{}, State> {
     // );
     // window.layout = this.layoutRef;
   }
+  onAction(action:any){
+    console.log(action);
+    var newJson = Model.doAction(action);
+    this.setState({model: newJson});
+    console.log(JSON.stringify(newJson, null, "\t"));
+  }
   render() {
     return (
       <>
@@ -66,6 +72,7 @@ export default class Layout extends Component<{}, State> {
             model={this.state.model}
             factory={this.factory}
             onRenderTabSet={this.onRenderTabSet.bind(this)}
+            //onAction={this.onAction.bind(this)}/>
           />
         </div>
       </>

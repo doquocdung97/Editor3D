@@ -1,5 +1,6 @@
 import React, { Component, ElementRef, createContext } from "react";
 import { Icon } from "../../Icon";
+import { Button } from "react-bootstrap";
 import "./styles.scss";
 import {
   PropsHeader,
@@ -29,7 +30,7 @@ const DropdownTab = createContext({
   toggle: () => {}
 });
 
-export class Header extends Component<PropsHeader, StateHeader> {
+class Header extends Component<PropsHeader, StateHeader> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -56,12 +57,12 @@ export class Header extends Component<PropsHeader, StateHeader> {
     );
   }
 }
-export class Body extends Component {
+class Body extends Component {
   render() {
     return this.props.children;
   }
 }
-export class TabBase extends Component<PropsTabBase, StateTabBase> {
+class TabBase extends Component<PropsTabBase, StateTabBase> {
   static Header: typeof Header = Header;
   static Body: typeof Body = Body;
   constructor(props: PropsTabBase) {
@@ -96,4 +97,7 @@ export class TabBase extends Component<PropsTabBase, StateTabBase> {
       </>
     );
   }
+}
+export {
+  TabBase
 }

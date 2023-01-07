@@ -1,5 +1,5 @@
 import "./styles.scss";
-import Sidebar from "./Gui/Sidebar";
+import {Sidebar} from "./Gui/Sidebar";
 import ToolBarBase from "./Gui/Toolbar";
 import Layout from "./Gui/Layout";
 import { Row, Col, Button } from "react-bootstrap";
