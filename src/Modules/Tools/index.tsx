@@ -1,6 +1,5 @@
-import LayoutService from "../../Gui/Layout/service";
-import SidebarService from "../../Gui/Sidebar/service";
-import { WorkbenchBase, TabBase } from "../../Gui/Sidebar";
+import SidebarService from "Gui/Sidebar/service";
+import { WorkbenchBase, TabBase } from "Gui/Sidebar";
 class TabChild extends TabBase {
   Title = "Skechers";
   render() {

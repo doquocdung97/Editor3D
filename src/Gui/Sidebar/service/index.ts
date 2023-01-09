@@ -13,8 +13,16 @@ class _SidebarService {
     return this._active;
   }
   setActive(val: number, update: boolean = true) {
-    this._active = val;
-    if (update) this.update();
+    if(this._active == val) return;
+    let tabs = this.getTabs();
+    let length = Object.keys(tabs).length 
+    if(length > val){
+      this._active = val;
+      if (update) this.update();
+    }else{
+      throw new Error("you can't active this tab!");
+    }
+    
   }
   update() {
     this.parent.setState({ date: new Date() });

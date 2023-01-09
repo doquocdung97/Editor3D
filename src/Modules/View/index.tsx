@@ -1,7 +1,7 @@
 import React, {createRef, useState, Component, useRef } from "react";
 
-import { ViewBase } from "../../Gui/Layout/View/index";
-import LayoutService from "../../Gui/Layout/service";
+import { ViewBase } from "Gui/Layout/View/index";
+import LayoutService from "Gui/Layout/service";
 import ViewHelper from "./ViewHelper";
 export class View3D extends ViewBase {
   // containerRef =  createRef();
@@ -48,9 +48,9 @@ export class View3D extends ViewBase {
 }
 LayoutService.addLayout("View3D", View3D);
 
-// import SidebarService from "../../Gui/Sidebar/service";
+// import SidebarService from "Gui/Sidebar/service";
 
-// import { TabBase, Icon, Button } from "../../Gui/Sidebar/Child";
+// import { TabBase, Icon, Button } from "Gui/Sidebar/Child";
 
 // class Tab extends Component {
 //   Hidden = false

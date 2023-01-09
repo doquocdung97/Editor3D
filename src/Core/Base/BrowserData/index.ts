@@ -1,7 +1,9 @@
 export default class BrowserData {
-  get(key: string) {
+  get(key: string): string {
     let data = localStorage.getItem(key);
-    return data;
+    if (data)
+      return data;
+    return String()
   }
   getAll() {
     return localStorage;

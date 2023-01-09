@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import { Dropdown, Button } from "react-bootstrap";
 import { Icon } from "../Icon";
-import Constants from "../../Constants";
+import Constants from "Constants";
 import "./styles.scss";
 import LayoutService from "../Layout/service";
 import { PropsConfig, StateConfig, ResizeConfig } from "./Interface";
 import SidebarService from "./service";
 import { TabBase as Tab } from "./Child";
 class WorkbenchBase {
-  Children = [];
+  Children:any[] = [];
   Name: String = String();
   Title: String = String();
   Icon: String = String();
   #Enabled: boolean = true;
+  private _enabled: boolean = true;
   Parent;
   constructor(parent: any) {
     let self = this;
@@ -20,7 +21,10 @@ class WorkbenchBase {
       let childs = self.Children;
       let new_child = [];
       for (let i = 0; i < childs.length; i++) {
-        new_child.push(new childs[i](self));
+        const element = childs[i]
+        if(element){
+          new_child.push(new element(self));
+        }
       }
       self.Children = new_child;
     }, 0);
@@ -64,7 +68,7 @@ class TabBase {
     this.#Enabled = status;
     this.update();
   }
-  setUI(element: any) {
+  setUI(element: Component) {
     this.#UI = element;
   }
   update() {
@@ -126,7 +130,7 @@ class Sidebar extends Component<PropsConfig, StateConfig> {
     };
     this.service.init(this);
   }
-  onSelectTab(item: any, index: number) {
+  onSelectTab(item: WorkbenchBase, index: number) {
     let index_active = this.service.Active();
     let ismobile = this.checkMobile();
     let status = true;

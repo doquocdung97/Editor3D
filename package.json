@@ -10,6 +10,7 @@
     "browserslist": "4.21.4",
     "dotenv-webpack": "^8.0.1",
     "flexlayout-react": "0.7.5",
+    "graphql-request": "^5.1.0",
     "raw-loader": "^4.0.2",
     "react": "18.0.0",
     "react-bootstrap": "2.6.0",
@@ -20,7 +21,8 @@
     "reactjs-eventemitter": "1.0.6",
     "rxjs": "7.6.0",
     "sass": "^1.57.1",
-    "three": "0.148.0"
+    "three": "0.148.0",
+    "tsconfig-paths-webpack-plugin": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",

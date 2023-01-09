@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require("dotenv-webpack");
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 const SETTING = {
   PORT: 8000,
   DEBUG: {
@@ -23,6 +25,7 @@ const SETTING = {
     script: "script.min.js",
   },
 };
+
 function jsonPath(...args) {
   let strpath = "";
   for (let index = 0; index < args.length; index++) {
@@ -31,6 +34,7 @@ function jsonPath(...args) {
   }
   return strpath;
 }
+
 module.exports = (env) => {
   return {
     entry: path.resolve(__dirname, SETTING.FILE.scriptmain),
@@ -90,7 +94,9 @@ module.exports = (env) => {
         },
         {
           test: /\.(js|ts|tsx)?$/,
-          exclude: /node_modules/,
+          exclude: [
+            /node_modules/
+          ],
           use: {
             loader: "babel-loader",
             options: {
@@ -98,7 +104,7 @@ module.exports = (env) => {
                 "@babel/preset-env",
                 "@babel/preset-typescript",
                 "@babel/preset-react",
-              ],
+              ]
             },
           },
         },
@@ -126,7 +132,7 @@ module.exports = (env) => {
           { from: path.join(__dirname, SETTING.PATH.icon) },
         ],
       }),
-      new Dotenv(),
+      new Dotenv()
     ],
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".json", ".wasm"],
@@ -136,6 +142,11 @@ module.exports = (env) => {
         path: false,
         crypto: false,
       },
+      plugins: [
+        new TsconfigPathsPlugin({
+          configFile: path.resolve(__dirname, 'paths.json'),
+        }),
+      ]
     },
   };
 };

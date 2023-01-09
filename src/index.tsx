@@ -2,6 +2,7 @@ import React from "react";
 window.React = React;
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import "./Core"
 import "./Gui";
 import "./Modules";
 const element = document.getElementById("root");

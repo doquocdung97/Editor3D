@@ -1,4 +1,4 @@
-import { ElementRef } from "react";
+import { ElementRef,ReactNode } from "react";
 export interface PropsConfig {
   show: boolean;
   onHide: any;
@@ -22,7 +22,7 @@ export interface ResizeConfig {
   widthmobile: number;
 }
 export interface PropsTabBase {
-  children?: ElementRef<any>;
+  children?: ReactNode;
   show?: boolean;
   onToggle?: (status: boolean) => void;
 }
@@ -31,7 +31,7 @@ export interface StateTabBase {
   toggle: any;
 }
 export interface PropsHeader {
-  children?: ElementRef<any>;
+  children?: ReactNode;
   title: string;
 }
 export interface StateHeader { }

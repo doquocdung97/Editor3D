@@ -1,16 +1,16 @@
 import Editor from "@monaco-editor/react";
 import React, { useState, Component, useRef } from "react";
-import { ViewBase } from "../../Gui/Layout/View/index";
-import LayoutService from "../../Gui/Layout/service";
-import SidebarService from "../../Gui/Sidebar/service";
+import { ViewBase } from "Gui/Layout/View/index";
+import LayoutService from "Gui/Layout/service";
+import SidebarService from "Gui/Sidebar/service";
 import { Dropdown, Button } from "react-bootstrap";
-import { Icon } from "../../Gui/Icon";
+import { Icon } from "Gui/Icon";
 import "./style.scss";
 import source from "!!raw-loader!./library.d.ts";
-import BrowserData from "../../Core/Base/BrowserData";
+import BrowserData from "Core/Base/BrowserData";
 export class EditorCode extends ViewBase {
   editorRef: any;
-  codedefualt;
+  codedefualt:string = String();
   browserData = new BrowserData();
   constructor(props: any) {
     super(props);
@@ -64,8 +64,8 @@ export class EditorCode extends ViewBase {
 }
 LayoutService.addLayout("EditorCode", EditorCode);
 
-// import { TabBase as Tab, Icon, Button } from "../../Gui/Sidebar/Child";
-import { WorkbenchBase, TabBase } from "../../Gui/Sidebar";
+// import { TabBase as Tab, Icon, Button } from "Gui/Sidebar/Child";
+import { WorkbenchBase, TabBase } from "Gui/Sidebar";
 
 class TabChild extends TabBase {
   Title = "File View";

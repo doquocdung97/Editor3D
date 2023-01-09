@@ -1,5 +1,5 @@
 import React, { Component, ElementRef, createContext } from "react";
-import { Icon } from "../../Icon";
+import { Icon } from "Gui/Icon";
 import { Button } from "react-bootstrap";
 import "./styles.scss";
 import {
