@@ -33,29 +33,29 @@
 aside{
   display: flex;
 }
-.toolbar-tabs .header{
-  padding:0 5px;
-}
-.toolbar-tabs .child{
-  height: 100%;
-  width: 100%;
-  display: none;
-  overflow: auto;
-}
-.toolbar-tabs .child.active{
-  display: block;
-}
-.toolbar-main .child.btn-bottom{
-  position: absolute;
-  bottom: 0px;
-  width: 50px;
-}
 
 .toolbar-tabs{
   height: 100%;
   width: 100%;
   flex: 1 0 0%;
   background: #90e7ff85;
+  .header{
+    padding:0 5px;
+  }
+  .child{
+    height: 100%;
+    width: 100%;
+    display: none;
+    overflow: auto;
+    &.active{
+      display: block;
+    }
+    &.btn-bottom{
+      position: absolute;
+      bottom: 0px;
+      width: 50px;
+    }
+  }
 }
 .nav.nav-mobile{
   background: #fff !important;

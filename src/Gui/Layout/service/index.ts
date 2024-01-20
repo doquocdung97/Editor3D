@@ -31,6 +31,11 @@ class _LayoutService {
                 component: "View3D",
                 name: "View 3D",
               },
+              {
+                type: "tab",
+                component: "ViewFlow",
+                name: "View Flow",
+              },
             ],
           },
         ],

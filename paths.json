@@ -5,6 +5,7 @@
         "src/*": ["*"],
         "@base/*": ["Base/*"],
         "@gui/*": ["Gui/*"],
+        "@components/*": ["Gui/component/*"],
         "@core/*": ["Core/*"],
         "@modules/*": ["Modules/*"]
       }

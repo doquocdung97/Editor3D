@@ -41,7 +41,7 @@
   display: flex;
 }
 .card-slide .body{
-  height: 300px;
+  min-height: 100px;
   overflow: auto;
   display: none;
 }

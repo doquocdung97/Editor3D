@@ -50,6 +50,7 @@ module.exports = (env) => {
       contentBase: path.join(__dirname, SETTING.PATH.src),
       // compress: true,
       // open: true,
+      // host: '0.0.0.0',
       compress: true,
       disableHostCheck: true, // That solved it
       port: SETTING.PORT,

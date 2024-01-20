@@ -1,0 +1,20 @@
+.input-base {
+  border-radius: 5px;
+  border: 1px solid #afafaf;
+}
+
+.input-vector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  .group {
+    gap: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    input {
+      width: 100%;
+    }
+  }
+}
