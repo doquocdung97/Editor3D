@@ -76,4 +76,52 @@ export class QUERY_DOCUMENT{
     }
   }
   `;
+
+  static readonly GET = gql`
+  query Document($name: String!) {
+    document(name: $name) {
+      uuid
+      name
+      label
+      version
+      type
+      propertys {
+        name
+        status
+        type
+        value
+        description
+        attribute
+      }
+      objects {
+        label
+        name
+        type
+        uuid
+        propertys {
+          name
+          status
+          type
+          value
+          description
+          attribute
+        }
+      }
+      medias {
+        propertys {
+          name
+          description
+          status
+          type
+          value
+          attribute
+        }
+        uuid
+        name
+        type
+        label
+      }
+    }
+  }
+  `
 }

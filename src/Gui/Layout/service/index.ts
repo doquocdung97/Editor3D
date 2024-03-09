@@ -18,6 +18,21 @@ class _LayoutService {
             children: [
               {
                 type: "tab",
+                component: "MapBox",
+                name: "Map Box",
+                altName: "test data",
+                config:{
+                  doc:"testdemo",
+                  object:"Position"
+                }
+              },
+              {
+                type: "tab",
+                component: "ViewFlow",
+                name: "View Flow",
+              },
+              {
+                type: "tab",
                 component: "EditorCode",
                 name: "Editer",
               },
@@ -31,11 +46,7 @@ class _LayoutService {
                 component: "View3D",
                 name: "View 3D",
               },
-              {
-                type: "tab",
-                component: "ViewFlow",
-                name: "View Flow",
-              },
+             
             ],
           },
         ],

@@ -1,0 +1,89 @@
+.test{
+  position: static;
+  display: flex;
+  justify-content: center;
+  .camera{
+    min-height: 480px;
+    height: 100%;
+    img{
+      height: 100%;
+    }
+  }
+  .tools{
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    height: 100%;
+    width: 100%;
+    .top{
+      // position: absolute;
+      // top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      p{
+        margin: 0;
+      }
+      .left,.right{
+        background: rgb(0 0 0 / 50%);
+        color: #fff;
+        width: 200px;
+        height: -webkit-fill-available;
+        height: fit-content;
+      }
+      .right{
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      .left{
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+    
+    .bottom{
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      .control{
+        margin-left: 25px;
+        margin-bottom: 25px;
+        bottom: 0;
+        position: absolute;
+        left: 0;
+      }
+      .message{
+        bottom: 0;
+        position: absolute;
+        right: 0;
+        background: rgb(0 0 0 / 50%);
+        width: 300px;
+        margin-top: auto;
+        .list{
+          display: flex;
+          flex-direction: column;
+          overflow: auto;
+          height: 100px;
+          color: #fff;
+          margin: 0 5px;
+          p{
+            margin: 0;
+            white-space: nowrap;
+          }
+        }
+        .text-box{
+          display: flex;
+          input{
+            width: 100%;
+          }
+          button{
+            border: none;
+          }
+        }
+        
+      }
+    }
+  }
+}

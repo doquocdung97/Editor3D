@@ -7,6 +7,6 @@ export default class Constants {
   static NAME = "Test";
 }
 export class Config{
-  static readonly MIDDLEWARE_HOST = process.env.REACT_APP_ENDPOINT
+  static readonly MIDDLEWARE_HOST = "192.168.1.4:8001"//process.env.REACT_APP_ENDPOINT
   static readonly MIDDLEWARE_ENDPOINT = `http://` + Config.MIDDLEWARE_HOST 
 }

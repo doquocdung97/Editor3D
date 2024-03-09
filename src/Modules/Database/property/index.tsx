@@ -14,12 +14,7 @@ import { Icon } from "@components/Icon";
 import DefaultCell from "./cell/default";
 import { ValueCellData } from "./cell";
 import { PropertyModel } from "./utils";
-import EditCode from "@components/EditCode";
-import { GraphqlHelper } from "@core/Base/graphql";
-import { QUERY_OBJECT } from "../graphql/object";
-import { QUERY_DOCUMENT } from "../graphql/document";
-import { QUERY_PROPERTY } from "../graphql/property";
-const _graphql = new GraphqlHelper()
+
 const ValueCell = (props: any) => {
   const { getValue, row, column, table } = props
   const initialValue = getValue();
@@ -88,37 +83,7 @@ const TableCellExpand = ({ getValue, row, column, table }: any) => {
     </>
   );
 };
-const EditCell = ({ row, table }: any) => {
-  const meta = table.options.meta;
-  const setEditedRows = (e: MouseEvent<HTMLButtonElement>) => {
-    const elName = e.currentTarget.name;
-    meta?.setEditedRows((old: []) => ({
-      ...old,
-      [row.id]: !old[row.id],
-    }));
-    if (elName !== "edit") {
-      meta?.revertData(row.index, e.currentTarget.name === "cancel");
-    }
-  };
-  return (
-    <div className="edit-cell-container">
-      {meta?.editedRows[row.id] ? (
-        <div className="edit-cell">
-          <button onClick={setEditedRows} name="cancel">
-            X
-          </button>
-          <button onClick={setEditedRows} name="done">
-            ✔
-          </button>
-        </div>
-      ) : (
-        <button onClick={setEditedRows} name="edit">
-          ✐
-        </button>
-      )}
-    </div>
-  );
-};
+
 const columnHelper = createColumnHelper<PropertyModel>();
 const columns = [
   columnHelper.accessor("name", {
@@ -156,11 +121,10 @@ const columns = [
   // }),
 ];
 export const Property = (props: any) => {
-  const { nameDocument, nameObject, theme, updateRow ,onEndChangeRow} = props
-  // const defaultData = convertData(resultdata)
-  const [data, setData] = useState<PropertyModel[]>([]);
+  const { updateRow ,onEndChangeRow, data} = props
+
   const [date, setDate] = useState(new Date());
-  // const [originalData, setOriginalData] = useState(() => [...defaultData]);
+
   const [editedRows, setEditedRows] = useState({});
   const getExpanded = (data: PropertyModel[]) => {
     const result: any = {}
@@ -173,33 +137,11 @@ export const Property = (props: any) => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     GenderIdentity: false,
   })
-  const fetch_data = async () => {
-    let result: any = null
-    if (theme == "document") {
-      result = await _graphql.query(QUERY_DOCUMENT.PROPERTY, {
-        "name": nameDocument
-      }).then((data: any) => data?.document?.propertys)
-    } else if (theme == "parameter") {
-      result = await _graphql.query(QUERY_DOCUMENT.PARAMETER, {
-        "name": nameDocument,
-      }).then((data: any) => data?.document?.parameters)
-    } else if (theme == "object") {
-      result = await _graphql.query(QUERY_OBJECT.GET_ONE, {
-        "namedoc": nameDocument,
-        "nameobject": nameObject
-      }).then((data: any) => data?.object?.propertys)
-    }
-    if(!result){
-      result = []
-    }
-    setData(result)
-    return result
-  };
+
   useEffect(() => {
     setEditedRows({})
-    fetch_data()
-  }, [nameObject]);
-  // const [statusShow, setStatusShow] = useState(true);
+  }, [data]);
+  
   const table = useReactTable({
     data,
     columns,
@@ -225,40 +167,15 @@ export const Property = (props: any) => {
         if(updateRow){
           updateRow(row.original)
         }
-        
       },
       onEndChangeRow: async (row: any) => {
-        if (row) {
-          const data_new = row.original
-          var variables = {
-            "namedoc": nameDocument,
-            "nameobject": null,
-            "nameproperty": data_new.name,
-            "value": row.original_value,
-            "parameter":false
-          }
-          if (theme == "parameter") {
-            variables.parameter = true
-          } else if (theme == "object") {
-            variables.nameobject = nameObject
-          }
-          const res: any = await _graphql.query(QUERY_PROPERTY.UPDATE, variables)
-          const result = res?.updateProperty
-          if (!result || !result.success) {
-            row.original.value = row._valuesCache.value
-            setDate(new Date())
-          }
-        }
-
-
         if(onEndChangeRow){
           const status = await onEndChangeRow(row)
           if(status){
             setDate(new Date())
           }
         }
-      },
-
+      }
     },
   });
   return (

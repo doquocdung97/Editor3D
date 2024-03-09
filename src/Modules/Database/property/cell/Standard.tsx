@@ -279,6 +279,142 @@ class FunctionCell extends ComponetValueCell {
 		);
 	}
 }
+class FileCell extends ComponetValueCell {
+	view(): React.ReactNode {
+		if (this.value){
+			return <p title={this.value.name}>{this.value.name}</p>
+		}else{
+			return (<></>);
+		}
+  }
+	onSelect(e:any[]){
+		// this.onChangeModal(e.map(x=>x.data))
+	}
+	onChangeModal(val: any) {
+		const files = val.target.files
+		if(files.length > 0){
+			this.setState({ newvalue: files[0] })
+		}
+    
+  }
+	convert(row: any) {
+		if(row?.original?.value){
+			row.original_value = row.original.value
+		}
+		return row
+	}
+	getResourcesModel(): ResourcesModel | undefined {
+		var data:any[] = []
+		const result = ServiceData.get("media")
+		if(result){
+			data = result.children
+		}
+		return {
+			title: `Edit ${this.name}`,
+			size: "sm",
+			body: <input type="file" onChange={this.onChangeModal.bind(this)}></input>
+		}
+	}
+}
+class GpsCell extends ComponetValueCell {
+	view(): React.ReactNode {
+		if (this.value){
+			var lat = this.value['lat'] || 0
+			var log = this.value['log'] || 0
+			return <p title={`${lat}, ${log}`}>{`${lat}, ${log}`}</p>
+		}else{
+			return (<></>);
+		}
+  }
+	// onSelect(e:any[]){
+	// 	// this.onChangeModal(e.map(x=>x.data))
+	// }
+	onChangeModal(val: any) {
+		const files = val.target.files
+		if(files.length > 0){
+			this.setState({ newvalue: files[0] })
+		}
+    
+  }
+	convert(row: any) {
+		if(row?.original?.value){
+			row.original_value = row.original.value
+		}
+		return row
+	}
+	getResourcesModel(): ResourcesModel | undefined {
+		var data:any[] = []
+		const result = ServiceData.get("media")
+		if(result){
+			data = result.children
+		}
+		var lat = 0
+		var log = 0
+		var value = Object.assign({},this.state.newvalue)
+		if (value){
+			lat = value['lat'] || lat
+			log = value['log'] || log
+		}
+		var self = this
+		return {
+			title: `Edit ${this.name}`,
+			size: "sm",
+			body: (
+				<>
+				<label className="form-label">Latitude</label>
+				<input type="number" className="form-control" value={lat} onChange={(e)=>{
+					value['lat'] = parseFloat(e.target.value)
+					self.setState({newvalue:value })
+				}}></input>
+				<label className="form-label">Longitude</label>
+				<input type="number" className="form-control" value={log} onChange={(e)=>{
+					value['log'] = parseFloat(e.target.value)
+					self.setState({newvalue:value })
+				}}></input>
+				</>
+			)
+		}
+	}
+}
+class GpsViewCell extends ComponetValueCell {
+	view(): React.ReactNode {
+		if (this.value){
+			var lat = this.value['lat'] || 0
+			var log = this.value['log'] || 0
+			return <p title={`${lat}, ${log}`}>{`${lat}, ${log}`}</p>
+		}else{
+			return (<></>);
+		}
+  }
+	// onSelect(e:any[]){
+	// 	// this.onChangeModal(e.map(x=>x.data))
+	// }
+	// onChangeModal(val: any) {
+	// 	const files = val.target.files
+	// 	if(files.length > 0){
+	// 		this.setState({ newvalue: files[0] })
+	// 	}
+    
+  // }
+	// convert(row: any) {
+	// 	if(row?.original?.value){
+	// 		row.original_value = row.original.value
+	// 	}
+	// 	return row
+	// }
+	// getResourcesModel(): ResourcesModel | undefined {
+	// 	var data:any[] = []
+	// 	const result = ServiceData.get("media")
+	// 	if(result){
+	// 		data = result.children
+	// 	}
+	// 	return {
+	// 		title: `Edit ${this.name}`,
+	// 		size: "sm",
+	// 		body: <input type="file" onChange={this.onChangeModal.bind(this)}></input>
+	// 	}
+	// }
+}
 export default {
 	"PropertyString": StringCell,
 	"PropertyStrings": StringsCell,
@@ -294,5 +430,8 @@ export default {
 	"PropertyMedia": MediaCell,
 	"PropertyColor": ColorCell,
 	"PropertyJson": JsonCell,
-	"PropertyFunction":FunctionCell
+	"PropertyFunction":FunctionCell,
+	"PropertyFile":FileCell,
+	"PropertyGps":GpsCell,
+	"PropertyGpsView":GpsViewCell
 }

@@ -9,12 +9,12 @@ const command = new _Command()
 function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
   /* This node instance can do many things. See the API reference. */
   const [commands, setCommands] = useState<any[]>([])
-  const fetch = async () => {
-    let data = await ServiceData.get_command_by_object(node.data.type)
+  const fetch = async (name) => {
+    let data = await ServiceData.get_command_by_object(name)
     setCommands(data)
   }
   useEffect(() => {
-    fetch()
+    fetch(node.data.type)
   }, [node])
 
   const extend = (node: any) => {
@@ -57,13 +57,12 @@ function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
         let name = ServiceData.getName()
         if (arg != 'Document') {
           name = node.data.name
-          type = 'object'
+          type = node.data.theme
         }
         params.push({
           "type": type,
           "name": name
         })
-
       }
       const variables = {
         "name": n?.name,

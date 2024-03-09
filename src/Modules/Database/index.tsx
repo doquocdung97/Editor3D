@@ -6,8 +6,6 @@ import Property from "./property";
 import service from "./service";
 import { Core } from "src/Core";
 import { useEffect, useState } from "react";
-import { GraphqlHelper } from '@core/Base/graphql';
-import { QUERY_PROPERTY } from "./graphql/property";
 import ServiceData from "./service";
 import SelectSearch from 'react-select-search';
 import  './style.scss'
@@ -123,12 +121,10 @@ const ModalCreaceProperty = (props: any) => {
 }
 class PropertyChild extends TabBase {
   Title = "Property";
-  private document_name: string = String()
-  private object_name: string = String()
   private theme: string = String()
   private show = false
   private _config: any = {}
-  private _graphql: GraphqlHelper
+  private rowData = []
   constructor(parent: any) {
     super(parent)
     service.addEventListener('onSelection', this.onSelection.bind(this))
@@ -138,20 +134,16 @@ class PropertyChild extends TabBase {
       self._config = data
       self.update()
     })
-    this._graphql = new GraphqlHelper()
   }
-  onSelection(row: any) {
-    const doc = row.doc
-    let obj = String()
-    if (row.data) {
-      obj = row.data.name
+
+  onSelection(result: any) {
+    if( result.data){
+      this.rowData = result.data
+    }else{
+      this.rowData = []
     }
-    if (this.document_name != doc || obj != this.object_name) {
-      this.document_name = doc
-      this.object_name = obj
-      this.theme = row.data.theme
-      this.update()
-    }
+    
+    this.update()
   }
 
   handleShowModal() {
@@ -165,30 +157,27 @@ class PropertyChild extends TabBase {
   }
 
   async createParameter(type, name) {
-    if (!this.document_name)
-      return
-    const result = await this._graphql.query(QUERY_PROPERTY.CREATE_PARAMETER, {
-      "doc": this.document_name,
-      "input": {
-        "type": type,
-        "name": name
-      }
-    }).then((data: any) => data?.createParameter)
-    if (result) {
-      if (result?.success) {
-        this.show = false
-        this.update()
-        return true
-      }
+    const result = await ServiceData.createParameter(type, name)
+    if (result.success) {
+      this.show = false
+      this.update()
+      return true
+    }
+    return false
+  }
+  async updateProperty(row:any){
+    const result = await ServiceData.updateProperty(row)
+    if (result.success) {
+      return true
     }
     return false
   }
   render() {
-
+    const data:any = ServiceData.getSelection()
     return (
       <>
         <TabBase.Base.Header title={this.Title}>
-          <TabBase.Button disabled={(this.theme == "parameter" ? false : true)} onClick={this.handleShowModal.bind(this)}>
+          <TabBase.Button disabled={(data?.theme == "parameter" ? false : true)} onClick={this.handleShowModal.bind(this)}>
             <TabBase.Icon iconName="PlusLg" />
           </TabBase.Button>
           <TabBase.Button>
@@ -197,9 +186,8 @@ class PropertyChild extends TabBase {
         </TabBase.Base.Header>
         <TabBase.Base.Body>
           <Property
-            nameDocument={this.document_name}
-            nameObject={this.object_name}
-            theme={this.theme}
+            onEndChangeRow={this.updateProperty}
+            data={this.rowData}
           />
           <ModalCreaceProperty
             propertys={this._config?.property}

@@ -1,8 +1,8 @@
 import {  gql } from '@apollo/client';
 export class QUERY_PROPERTY{
   static readonly UPDATE = gql`
-  mutation UpdateProperty($namedoc: String!, $nameproperty: String!, $value: ObjectField!, $nameobject: String, $parameter: Boolean) {
-    updateProperty(namedoc: $namedoc, nameproperty: $nameproperty, value: $value, nameobject: $nameobject, parameter: $parameter) {
+  mutation UpdateProperty($namedoc: String!, $nameproperty: String!, $value: ObjectField!, $nameobject: String, $parameter: Boolean, $mode: ObjectModeEnum!) {
+    updateProperty(namedoc: $namedoc, nameproperty: $nameproperty, value: $value, nameobject: $nameobject, parameter: $parameter, mode: $mode) {
       code
       success
       message

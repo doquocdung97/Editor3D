@@ -26,8 +26,7 @@ export class ComponetValueCell extends React.Component<{ getValue: any, row: any
       const val = prevProps.row.original.value
       this.setState({ value: val, newvalue: val })
     }
-    // const val = this.props.row.original.value
-    // this.setState({ value: val, newvalue: val })
+    this.props.row.convert = this.convert.bind(this)
   }
   constructor(props: any) {
     super(props)
@@ -37,7 +36,6 @@ export class ComponetValueCell extends React.Component<{ getValue: any, row: any
       newvalue: this.props.getValue(),
       messageerror: String()
     }
-    this.props.row.convert = this.convert.bind(this)
   }
   get name(): string {
     return this.props.row.original.name

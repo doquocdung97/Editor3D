@@ -8,8 +8,8 @@ class GraphqlHelper {
 	// _client_subscription:SubscriptionClient
 	constructor() {
 		this.settings = {
-			ENDPOINT: `http://127.0.0.1:8001/graphql/`,
-			ENDPOINT_WS: `ws://127.0.0.1:8001/graphql/`,
+			"ENDPOINT": `${Config.MIDDLEWARE_ENDPOINT}/graphql/`,
+			"ENDPOINT_WS": `ws://${Config.MIDDLEWARE_HOST}/graphql/`,
 			Token: ""
 		}
 		this._client = new GraphQLClient(this.settings.ENDPOINT);

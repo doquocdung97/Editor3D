@@ -9,7 +9,7 @@ export default class ToolBarBase extends Component {
           expand="lg"
           variant="light"
           bg="light"
-          style={{ width: "60px" }}
+          style={{ width: "60px", flexWrap: "nowrap"}}
         >
           <Button onClick={this.props.onShow}>show</Button>
           <Navbar.Brand href="#">Navbar</Navbar.Brand>
